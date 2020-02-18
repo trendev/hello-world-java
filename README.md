@@ -1,2 +1,2 @@
 # hello-world
-NodeJS &amp; Java Microprofile hello-world Rest API 
+Java Microprofile hello-world Rest API 
