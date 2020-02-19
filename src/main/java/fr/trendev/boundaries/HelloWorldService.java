@@ -20,7 +20,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 public class HelloWorldService {
 
     @Inject
-    @ConfigProperty(name = "TEXT_MESSAGE", defaultValue = "Hello World")
+    @ConfigProperty(name = "TEXT_MESSAGE", defaultValue = "NO_MESSAGE_SET")
     private String message;
 
     @GET
