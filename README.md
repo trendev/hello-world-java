@@ -1,13 +1,12 @@
-# hello-world
-Java Microprofile hello-world Rest API 
+# helloworld
+Java Microprofile helloworld Rest API 
 
 ## Docker context
-`docker build -t trendev/hello-world-java .`
+`docker build -t trendev/helloworld .`
 
-`docker run -d -p 8080:8080 trendev/hello-world-java`
+`docker run -d -p 8080:8080 trendev/helloworld`
 
 #### Edit the TEXT_MESSAGE property
-`docker run -p 8080:8080 -e TEXT_MESSAGE="Bonjour le monde" trendev/hello-world-java`
-
-### Test
-`curl -s -vvv http://localhost:8080/api/hello-world`
+`docker run -p 80:8080 -e TEXT_MESSAGE="Bonjour le monde" trendev/helloworld`
+#### Test
+`curl -s -vvv localhost`
