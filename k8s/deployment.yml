@@ -6,7 +6,7 @@ metadata:
   name: hello-world-java
   namespace: hello-world-java
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: hello-world-java
