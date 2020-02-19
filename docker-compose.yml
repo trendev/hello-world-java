@@ -1,9 +1,9 @@
 version: "3"
 services:
-  hello-world-java:
+  helloworld:
     build: .
-    image: trendev/hello-world-java
-    container_name: hello-world-java
+    image: trendev/helloworld
+    container_name: helloworld
     environment:
       - TEXT_MESSAGE='Hello Docker World'
     ports:

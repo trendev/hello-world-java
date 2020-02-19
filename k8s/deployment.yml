@@ -2,14 +2,14 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: hello-world-java
-  name: hello-world-java
-  namespace: hello-world-java
+    app: helloworld
+  name: helloworld
+  namespace: helloworld
 spec:
   replicas: 4
   selector:
     matchLabels:
-      app: hello-world-java
+      app: helloworld
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -18,12 +18,12 @@ spec:
   template:
     metadata:
       labels:
-        app: hello-world-java
+        app: helloworld
     spec:
       containers:
-      - image: trendev/hello-world-java        
+      - image: trendev/helloworld        
         imagePullPolicy: Always
-        name: hello-world-java
+        name: helloworld
         ports:
         - containerPort: 8080
         env:

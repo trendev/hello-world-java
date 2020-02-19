@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: hello-world-java
-  namespace: hello-world-java
+  name: helloworld
+  namespace: helloworld
   labels:
-    app: hello-world-java
+    app: helloworld
 spec:
   type: NodePort
   ports:
@@ -12,4 +12,4 @@ spec:
     port: 80
     targetPort: 8080
   selector:
-    app: hello-world-java
+    app: helloworld
