@@ -41,4 +41,17 @@ spec:
               fieldPath: status.podIP
         - name: TEXT_MESSAGE
           value: 'Hello Kubernetes World'
+        livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 3
+        readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            failureThreshold: 20
         resources: {}
