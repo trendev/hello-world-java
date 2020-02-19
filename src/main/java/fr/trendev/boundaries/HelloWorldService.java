@@ -15,24 +15,24 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
  *
  * @author
  */
-@Path("hello-world")
+@Path("/")
 @RequestScoped
 public class HelloWorldService {
 
     @Inject
     @ConfigProperty(name = "TEXT_MESSAGE", defaultValue = "NO_MESSAGE_SET")
     private String message;
-    
+
     @Inject
-    @ConfigProperty(name = "MY_POD_NAME")
+    @ConfigProperty(name = "MY_POD_NAME", defaultValue = "NO_POD_NAME")
     private String podName;
-    
+
     @Inject
-    @ConfigProperty(name = "MY_POD_NAMESPACE")
+    @ConfigProperty(name = "MY_POD_NAMESPACE", defaultValue = "NO_POD_NAMESPACE")
     private String namespace;
-    
+
     @Inject
-    @ConfigProperty(name = "MY_POD_IP")
+    @ConfigProperty(name = "MY_POD_IP", defaultValue = "NO_POD_IP")
     private String podIP;
 
     @GET

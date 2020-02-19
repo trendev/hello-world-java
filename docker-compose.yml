@@ -1,0 +1,10 @@
+version: "3"
+services:
+  hello-world-java:
+    build: .
+    image: trendev/hello-world-java
+    container_name: hello-world-java
+    environment:
+      - TEXT_MESSAGE='Hello Docker World'
+    ports:
+      - 80:8080
