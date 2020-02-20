@@ -14,4 +14,4 @@ FROM payara/micro
 LABEL maintainer="jsie@trendev.fr"
 # Autodeploy the project
 COPY --from=maven ./target/*.war /opt/payara/deployments
-CMD ["--nocluster", "--deploymentDir", "/opt/payara/deployments"]
+CMD ["--clustermode", "kubernetes:helloworld,helloworld", "--deploymentDir", "/opt/payara/deployments"]
