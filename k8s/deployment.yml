@@ -21,43 +21,45 @@ spec:
         app: helloworld
     spec:
       containers:
-      - image: trendev/helloworld        
-        imagePullPolicy: Always
-        name: helloworld
-        ports:
-        - containerPort: 8080
-        env:
-        - name: MY_POD_NAME
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.name
-        - name: MY_POD_NAMESPACE
-          valueFrom:
-            fieldRef:
-              fieldPath: metadata.namespace
-        - name: MY_POD_IP
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
-        - name: TEXT_MESSAGE
-          value: 'Hello Kubernetes World'
-        livenessProbe:
+        - image: trendev/helloworld
+          imagePullPolicy: Always
+          name: helloworld
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: TEXT_MESSAGE
+              value: "Hello Kubernetes World"
+          livenessProbe:
             httpGet:
               path: /health/live
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 3
-        readinessProbe:
+          readinessProbe:
             httpGet:
               path: /health/ready
               port: 8080
-            initialDelaySeconds: 10
+            initialDelaySeconds: 30
             periodSeconds: 2
             failureThreshold: 1
-        startupProbe:
-            httpGet:
-              path: /health/live
-              port: 8080
-            failureThreshold: 12
-            periodSeconds: 5
-        resources: {}
+          # version 1.16 - alpha
+          # startupProbe:
+          #   httpGet:
+          #     path: /health/live
+          #     port: 8080
+          #   failureThreshold: 12
+          #   periodSeconds: 5
+          #   initialDelaySeconds: 20
+          resources: {}
