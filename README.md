@@ -10,3 +10,9 @@ Java Microprofile helloworld Rest API
 `docker run -p 80:8080 -e TEXT_MESSAGE="Bonjour le monde" trendev/helloworld`
 #### Test
 `curl -s -vvv localhost`
+
+## Kubernetes context
+All confif files are located in `k8s/` folder
+
+### Create helloworld namespace
+`kubectl apply -f k8s/`
