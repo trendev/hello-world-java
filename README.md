@@ -42,14 +42,25 @@ namespace/helloworld unchanged
 service/helloworld created 
 ``` 
 
-### Control if 4 helloworld Pods are running
+### Control if deployment is successful
 
 `kubectl get pods -n helloworld`
 ```
 NAME                          READY   STATUS    RESTARTS   AGE
-helloworld-845b69789b-89kz5   1/1     Running   0          9m46s
-helloworld-845b69789b-b4shn   1/1     Running   0          9m46s
-helloworld-845b69789b-p74hw   1/1     Running   0          9m46s
-helloworld-845b69789b-zcnpj   1/1     Running   0          9m46s
+helloworld-845b69789b-mvq5x   1/1     Running   0          88s
+helloworld-845b69789b-ntxkc   1/1     Running   0          88s
+helloworld-845b69789b-ps8kf   1/1     Running   0          88s
+helloworld-845b69789b-sjrmn   1/1     Running   0          88s
 ```
 
+`kubectl get rs -n helloworld`
+```
+NAME                    DESIRED   CURRENT   READY   AGE
+helloworld-845b69789b   4         4         4       95s
+```
+
+`kubectl get deployments.apps -n helloworld`
+```
+NAME         READY   UP-TO-DATE   AVAILABLE   AGE
+helloworld   4/4     4            4           1m47s
+```
