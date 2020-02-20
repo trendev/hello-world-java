@@ -13,5 +13,5 @@ RUN mvn install
 FROM payara/micro
 LABEL maintainer="jsie@trendev.fr"
 # Autodeploy the project
-COPY --from=maven ./target/*.war $DEPLOY_DIR/
+COPY --from=maven ./target/*.war /opt/payara/deployments
 CMD ["--nocluster", "--deploymentDir", "/opt/payara/deployments"]
