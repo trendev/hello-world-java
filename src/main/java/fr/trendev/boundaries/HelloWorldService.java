@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.ejb.Stateless;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
@@ -21,7 +22,7 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
  * @author
  */
 @Path("/")
-@RequestScoped
+@Stateless
 public class HelloWorldService {
 
     private static final Logger LOG = Logger.getLogger(HelloWorldService.class.getName());

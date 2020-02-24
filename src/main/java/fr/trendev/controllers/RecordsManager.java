@@ -16,20 +16,17 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
 
 /**
  *
  * @author jsie
  */
-@Clustered(callPostConstructOnAttach = false, callPreDestoyOnDetach = false,
-        lock = DistributedLockType.LOCK, keyName = "records")
+@Clustered(callPostConstructOnAttach = true, callPreDestoyOnDetach = false,
+        lock = DistributedLockType.INHERIT, keyName = "records")
 @Singleton
-@Startup
-public class RecordsManager implements Serializable{
+public class RecordsManager implements Serializable {
 
-    private static volatile List<String> RECORDS
-            = Collections.synchronizedList(new LinkedList<>());
+    private List<String> RECORDS;
 
     private static final Logger LOG = Logger.getLogger(RecordsManager.class.getName());
 
@@ -38,12 +35,18 @@ public class RecordsManager implements Serializable{
 
     @PostConstruct
     public void init() {
-        LOG.log(Level.INFO, "{0} initialized", RecordsManager.class.getSimpleName());
+        if (RECORDS == null) {
+            RECORDS = Collections.synchronizedList(new LinkedList<>());
+            LOG.log(Level.WARNING, "RECORDS was null and {0} is now initialized", RecordsManager.class.getSimpleName());
+        } else {
+            LOG.log(Level.WARNING, "{0} started but does not need to be initialized", RecordsManager.class.getSimpleName());
+        }
+
     }
 
     @PreDestroy
     public void close() {
-        LOG.log(Level.INFO, "Destroying {0}", RecordsManager.class.getSimpleName());
+        LOG.log(Level.WARNING, "Destroying {0}", RecordsManager.class.getSimpleName());
     }
 
     synchronized public List<String> add(String value) {
