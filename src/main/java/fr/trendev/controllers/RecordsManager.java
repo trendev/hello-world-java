@@ -7,6 +7,7 @@ package fr.trendev.controllers;
 
 import fish.payara.cluster.Clustered;
 import fish.payara.cluster.DistributedLockType;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,34 +23,35 @@ import javax.ejb.Startup;
  * @author jsie
  */
 @Clustered(callPostConstructOnAttach = false, callPreDestoyOnDetach = false,
-        lock = DistributedLockType.LOCK, keyName = "request-records")
+        lock = DistributedLockType.LOCK, keyName = "records")
 @Singleton
 @Startup
-public class RequestRecords {
+public class RecordsManager implements Serializable{
 
     private static volatile List<String> RECORDS
             = Collections.synchronizedList(new LinkedList<>());
 
-    private static final Logger LOG = Logger.getLogger(RequestRecords.class.getName());
+    private static final Logger LOG = Logger.getLogger(RecordsManager.class.getName());
 
-    public RequestRecords() {
+    public RecordsManager() {
     }
 
     @PostConstruct
     public void init() {
-        LOG.log(Level.INFO, "{0} initialized", RequestRecords.class.getSimpleName());
+        LOG.log(Level.INFO, "{0} initialized", RecordsManager.class.getSimpleName());
     }
 
     @PreDestroy
     public void close() {
-        LOG.log(Level.INFO, "Destroying {0}", RequestRecords.class.getSimpleName());
+        LOG.log(Level.INFO, "Destroying {0}", RecordsManager.class.getSimpleName());
     }
 
-    public void add(String value) {
+    synchronized public List<String> add(String value) {
         RECORDS.add(value);
+        return Collections.unmodifiableList(RECORDS);
     }
 
-    public static List<String> getRecords() {
+    protected List<String> getRecords() {
         return Collections.unmodifiableList(RECORDS);
     }
 
