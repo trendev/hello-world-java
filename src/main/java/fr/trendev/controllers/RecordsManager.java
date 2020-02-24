@@ -58,4 +58,8 @@ public class RecordsManager implements Serializable {
         return Collections.unmodifiableList(RECORDS);
     }
 
+    public boolean isNull() {
+        return RECORDS == null;
+    }
+
 }
