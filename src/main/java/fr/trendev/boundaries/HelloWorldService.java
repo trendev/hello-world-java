@@ -1,5 +1,6 @@
 package fr.trendev.boundaries;
 
+import fr.trendev.controllers.RequestRecords;
 import java.util.Date;
 import java.util.logging.Logger;
 import javax.enterprise.context.RequestScoped;
@@ -38,6 +39,9 @@ public class HelloWorldService {
     @Inject
     @ConfigProperty(name = "MY_POD_IP", defaultValue = "NO_POD_IP")
     private String podIP;
+    
+    @Inject
+    private RequestRecords records;
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
