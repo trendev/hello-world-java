@@ -16,6 +16,8 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.ejb.Singleton;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  *
@@ -28,8 +30,7 @@ public class RecordsManager implements Serializable {
 
     private LinkedList<String> records;
 
-    // limits the size of the list
-    private final int MAX_SIZE = 20;
+    private int maxSize;
 
     private static final Logger LOG = Logger.getLogger(RecordsManager.class.getName());
 
@@ -38,6 +39,13 @@ public class RecordsManager implements Serializable {
 
     @PostConstruct
     public void init() {
+
+        // limits the size of the list
+        Config config = ConfigProvider.getConfig();
+        this.maxSize = Integer.parseInt(
+                config.getOptionalValue("RECORDS_MAX_SIZE", String.class)
+                        .orElse("20"));
+
         if (records == null) {
             records = new LinkedList<>();
             LOG.log(Level.WARNING, "records was null and {0} is now initialized", RecordsManager.class.getSimpleName());
@@ -53,8 +61,16 @@ public class RecordsManager implements Serializable {
     }
 
     synchronized public List<String> add(String value) {
-        if (records.size() == MAX_SIZE) {
-            records.remove();
+
+        if (isNull()) {
+            throw new IllegalStateException("Records cannot be null");
+        }
+
+        //pop old entries
+        if (records.size() >= maxSize) {
+            while (records.size() != maxSize - 1) {
+                records.remove();
+            }
         }
         records.add(value);
         return Collections.unmodifiableList(records);

@@ -51,21 +51,6 @@ public class HelloWorldService {
     @Produces(MediaType.APPLICATION_JSON)
     public Response message() {
 
-        if (recordsManager.isNull()) {
-            LOG.log(Level.SEVERE, "Records cannot be null");
-            return Response.status(Response.Status.SERVICE_UNAVAILABLE)
-                    .entity(Json.createObjectBuilder()
-                            .add("status", "error")
-                            .add("message", "Records cannot be null")
-                            .add("pod_name", podName)
-                            .add("namespace", namespace)
-                            .add("pod_IP", podIP)
-                            .add("timestamp", new Date().getTime())
-                            .build()
-                    )
-                    .build();
-        }
-
         List<String> records = this.recordsManager.add(podName);
 
         JsonObject jo = Json.createObjectBuilder()
