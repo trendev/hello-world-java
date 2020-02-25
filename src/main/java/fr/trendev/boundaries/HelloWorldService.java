@@ -71,6 +71,7 @@ public class HelloWorldService {
         JsonObject jo = Json.createObjectBuilder()
                 .add("message", message)
                 .add("records", Json.createArrayBuilder(records).build())
+                .add("records_length", records.size())
                 .add("pod_name", podName)
                 .add("namespace", namespace)
                 .add("pod_IP", podIP)
