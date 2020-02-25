@@ -26,7 +26,10 @@ import javax.ejb.Singleton;
 @Singleton
 public class RecordsManager implements Serializable {
 
-    private List<String> RECORDS;
+    private LinkedList<String> records;
+
+    // limits the size of the list
+    private final int MAX_SIZE = 20;
 
     private static final Logger LOG = Logger.getLogger(RecordsManager.class.getName());
 
@@ -35,9 +38,9 @@ public class RecordsManager implements Serializable {
 
     @PostConstruct
     public void init() {
-        if (RECORDS == null) {
-            RECORDS = Collections.synchronizedList(new LinkedList<>());
-            LOG.log(Level.WARNING, "RECORDS was null and {0} is now initialized", RecordsManager.class.getSimpleName());
+        if (records == null) {
+            records = new LinkedList<>();
+            LOG.log(Level.WARNING, "records was null and {0} is now initialized", RecordsManager.class.getSimpleName());
         } else {
             LOG.log(Level.WARNING, "{0} started but does not need to be initialized", RecordsManager.class.getSimpleName());
         }
@@ -50,16 +53,19 @@ public class RecordsManager implements Serializable {
     }
 
     synchronized public List<String> add(String value) {
-        RECORDS.add(value);
-        return Collections.unmodifiableList(RECORDS);
+        if (records.size() == MAX_SIZE) {
+            records.remove();
+        }
+        records.add(value);
+        return Collections.unmodifiableList(records);
     }
 
     protected List<String> getRecords() {
-        return Collections.unmodifiableList(RECORDS);
+        return Collections.unmodifiableList(records);
     }
 
     public boolean isNull() {
-        return RECORDS == null;
+        return records == null;
     }
 
 }
