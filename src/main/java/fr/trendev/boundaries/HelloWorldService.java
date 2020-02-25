@@ -53,10 +53,15 @@ public class HelloWorldService {
 
         List<String> records = this.recordsManager.add(podName);
 
+        long podsInRecords = records.stream()
+                .distinct()
+                .count();
+
         JsonObject jo = Json.createObjectBuilder()
                 .add("message", message)
                 .add("records", Json.createArrayBuilder(records).build())
                 .add("records_length", records.size())
+                .add("pods_in_records", podsInRecords)
                 .add("pod_name", podName)
                 .add("namespace", namespace)
                 .add("pod_IP", podIP)
