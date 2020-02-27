@@ -36,8 +36,14 @@ public class HelloWorldService {
     private String namespace;
     private String podIP;
 
+    private final long maxMem;
+
     @Inject
     private RecordsManager recordsManager;
+
+    public HelloWorldService() {
+        this.maxMem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
+    }
 
     @PostConstruct
     protected void init() {
@@ -93,6 +99,7 @@ public class HelloWorldService {
         this.jsonBuilderHelper(job, "namespace", namespace);
         this.jsonBuilderHelper(job, "pod_IP", podIP);
 
+        job.add("max_heap_MB", this.maxMem);
         job.add("timestamp", new Date().getTime());
 
         JsonObject jo = job.build();
