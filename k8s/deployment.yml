@@ -40,7 +40,7 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: RECORDS_MAX_SIZE
-              value: "30"
+              value: "40"
             - name: TEXT_MESSAGE
               value: "Hello Kubernetes World"
           args:
