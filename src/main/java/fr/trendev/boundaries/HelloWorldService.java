@@ -1,22 +1,25 @@
 package fr.trendev.boundaries;
 
 import fr.trendev.controllers.RecordsManager;
-import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
-import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.json.Json;
 import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.eclipse.microprofile.config.Config;
+import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  *
@@ -28,24 +31,45 @@ public class HelloWorldService {
 
     private static final Logger LOG = Logger.getLogger(HelloWorldService.class.getName());
 
-    @Inject
-    @ConfigProperty(name = "TEXT_MESSAGE", defaultValue = "NO_MESSAGE_SET")
     private String message;
-
-    @Inject
-    @ConfigProperty(name = "MY_POD_NAME", defaultValue = "NO_POD_NAME")
     private String podName;
-
-    @Inject
-    @ConfigProperty(name = "MY_POD_NAMESPACE", defaultValue = "NO_POD_NAMESPACE")
     private String namespace;
-
-    @Inject
-    @ConfigProperty(name = "MY_POD_IP", defaultValue = "NO_POD_IP")
     private String podIP;
 
     @Inject
     private RecordsManager recordsManager;
+
+    @PostConstruct
+    protected void init() {
+        Config config = ConfigProvider.getConfig();
+        this.message = config.getOptionalValue("TEXT_MESSAGE", String.class)
+                .orElse("helloworld");
+
+        // fields will be omitted if null
+        this.podName = config.getOptionalValue("MY_POD_NAME", String.class)
+                .orElseGet(() -> {
+                    String hostname = null;
+                    try {
+                        hostname = InetAddress.getLocalHost().getHostName();
+                    } catch (UnknownHostException ex) {
+                    }
+                    return hostname;
+                });
+        this.namespace = config.getOptionalValue("MY_POD_NAMESPACE", String.class)
+                .orElse(null);
+        this.podIP = config.getOptionalValue("MY_POD_IP", String.class)
+                .orElseGet(() -> {
+                    String ip = null;
+                    try {
+                        ip = InetAddress.getLocalHost().getHostAddress();
+                    } catch (UnknownHostException ex) {
+                    }
+                    return ip;
+                });
+
+        LOG.log(Level.INFO, "{0} initialized",
+                HelloWorldService.class.getSimpleName());
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -57,19 +81,32 @@ public class HelloWorldService {
                 .distinct()
                 .count();
 
-        JsonObject jo = Json.createObjectBuilder()
-                .add("message", message)
+        JsonObjectBuilder job = Json.createObjectBuilder();
+
+        job.add("message", message)
                 .add("records", Json.createArrayBuilder(records).build())
                 .add("records_length", records.size())
-                .add("pods_in_records", podsInRecords)
-                .add("pod_name", podName)
-                .add("namespace", namespace)
-                .add("pod_IP", podIP)
-                .add("timestamp", new Date().getTime())
-                .build();
+                .add("pods_in_records", podsInRecords);
+
+        //optional values
+        this.jsonBuilderHelper(job, "pod_name", podName);
+        this.jsonBuilderHelper(job, "namespace", namespace);
+        this.jsonBuilderHelper(job, "pod_IP", podIP);
+
+        job.add("timestamp", new Date().getTime());
+
+        JsonObject jo = job.build();
 
         LOG.info(jo.toString());
 
         return Response.ok(jo).build();
+    }
+
+    private void jsonBuilderHelper(JsonObjectBuilder job,
+            String key,
+            String value) {
+        if (value != null && !value.isEmpty()) {
+            job.add(key, value);
+        }
     }
 }
