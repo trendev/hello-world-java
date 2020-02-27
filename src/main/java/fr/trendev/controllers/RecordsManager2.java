@@ -27,6 +27,8 @@ import org.eclipse.microprofile.config.ConfigProvider;
 @HazelcastReplicatedMap
 @ApplicationScoped
 public class RecordsManager2 implements RecordsManager {
+    
+    private HazelcastInstance hz;
 
     private ReplicatedMap<String, LinkedList<String>> map;
 
@@ -44,7 +46,7 @@ public class RecordsManager2 implements RecordsManager {
             throw new IllegalStateException("No Hazelcast instance available");
         } else {
             // get the first one
-            HazelcastInstance hz = hzInstances.get(0);
+            this.hz = hzInstances.get(0);
             this.map = hz.getReplicatedMap(this.getClass().getName());
         }
     }
