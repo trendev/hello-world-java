@@ -108,7 +108,7 @@ public class HelloWorldService {
 
         job.add("max_heap_MB", this.maxMem);
         job.add("time_ns",time);
-        job.add("timestamp", new Date().getTime());
+        job.add("timestamp_ms", new Date().getTime());
 
         JsonObject jo = job.build();
 
