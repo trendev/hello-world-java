@@ -26,15 +26,15 @@ import org.eclipse.microprofile.config.ConfigProvider;
         lock = DistributedLockType.INHERIT, keyName = "records")
 @Singleton
 @ClusteredSingleton
-public class ClusteredSingletonRecordsManager implements RecordsManager {
+public class RecordsManager1 implements RecordsManager {
 
     private LinkedList<String> records;
 
     private int maxSize;
 
-    private static final Logger LOG = Logger.getLogger(ClusteredSingletonRecordsManager.class.getName());
+    private static final Logger LOG = Logger.getLogger(RecordsManager1.class.getName());
 
-    public ClusteredSingletonRecordsManager() {
+    public RecordsManager1() {
     }
 
     @PostConstruct
@@ -49,9 +49,9 @@ public class ClusteredSingletonRecordsManager implements RecordsManager {
 
         if (records == null) {
             records = new LinkedList<>();
-            LOG.log(Level.WARNING, "records was null and {0} is now initialized", ClusteredSingletonRecordsManager.class.getSimpleName());
+            LOG.log(Level.WARNING, "records was null and {0} is now initialized", RecordsManager1.class.getSimpleName());
         } else {
-            LOG.log(Level.WARNING, "{0} started but does not need to be initialized", ClusteredSingletonRecordsManager.class.getSimpleName());
+            LOG.log(Level.WARNING, "{0} started but does not need to be initialized", RecordsManager1.class.getSimpleName());
         }
 
     }
@@ -59,7 +59,7 @@ public class ClusteredSingletonRecordsManager implements RecordsManager {
     @PreDestroy
     @Override
     public void close() {
-        LOG.log(Level.WARNING, "Destroying {0}", ClusteredSingletonRecordsManager.class.getSimpleName());
+        LOG.log(Level.WARNING, "Destroying {0}", RecordsManager1.class.getSimpleName());
     }
 
     @Override
