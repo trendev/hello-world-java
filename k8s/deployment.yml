@@ -38,6 +38,15 @@ spec:
               value: "30"
             - name: TEXT_MESSAGE
               value: "Hello Kubernetes World"
+          args:
+            - "--clustermode"
+            - "kubernetes:$(MY_POD_NAMESPACE),helloworld"
+            - "--group"
+            - "ig_$(MY_POD_NAMESPACE)" 
+            - "--clustername" 
+            - "dg_$(MY_POD_NAMESPACE)"
+            - "--deploymentDir"
+            - "/opt/payara/deployments"
           livenessProbe:
             httpGet:
               path: /health/live

@@ -18,13 +18,3 @@ COPY --from=maven ./target/*.war /opt/payara/deployments
 
 # Payara instances are standalone, Hazelcast clustering feature is disabled
 # CMD ["--nocluster", "--deploymentDir", "/opt/payara/deployments"]
-
-# k8s RBAC (ClusterRoleBinding) must be applied, otherwise instances can't connect to the Kubernetes master
-# Enable Kubernetes cluster mode and autodiscovery in helloworld namespace through helloworld service
-# MY_POD_NAMESPACE value is replaced during Kubernetes deployment
-ENV MY_POD_NAMESPACE="helloworld"
-ENV MY_POD_SERVICE="helloworld"
-ENTRYPOINT java -XX:+UseContainerSupport -XX:MaxRAMPercentage=25.0 -jar payara-micro.jar \
---clustermode kubernetes:$MY_POD_NAMESPACE,$MY_POD_SERVICE \
---group ig_$MY_POD_NAMESPACE --clustername dg_$MY_POD_NAMESPACE \
---deploymentDir /opt/payara/deployments
