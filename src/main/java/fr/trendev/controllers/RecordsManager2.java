@@ -8,6 +8,7 @@ package fr.trendev.controllers;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ReplicatedMap;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -27,11 +28,26 @@ import org.eclipse.microprofile.config.ConfigProvider;
 @ApplicationScoped
 public class RecordsManager2 implements RecordsManager {
 
-    private ReplicatedMap<String, List<String>> replicatedMap;
+    private ReplicatedMap<String, LinkedList<String>> map;
 
     private int maxSize;
 
+    private final String key = "records";
+
     private static final Logger LOG = Logger.getLogger(RecordsManager2.class.getName());
+
+    public RecordsManager2() {
+        List<HazelcastInstance> hzInstances
+                = new ArrayList<>(Hazelcast.getAllHazelcastInstances());
+
+        if (hzInstances.isEmpty()) {
+            throw new IllegalStateException("No Hazelcast instance available");
+        } else {
+            // get the first one
+            HazelcastInstance hz = hzInstances.get(0);
+            this.map = hz.getReplicatedMap(this.getClass().getName());
+        }
+    }
 
     @PostConstruct
     @Override
@@ -42,10 +58,6 @@ public class RecordsManager2 implements RecordsManager {
         this.maxSize = Integer.parseInt(
                 config.getOptionalValue("RECORDS_MAX_SIZE", String.class)
                         .orElse("20"));
-
-        Hazelcast.getAllHazelcastInstances().forEach(hz -> {
-            LOG.log(Level.WARNING, "Hazelcast instance : {0}", hz.getName());
-        });
 
         LOG.log(Level.WARNING, "{0} is now initialized", this.getClass().getSimpleName());
 
@@ -59,7 +71,19 @@ public class RecordsManager2 implements RecordsManager {
 
     @Override
     public List<String> add(String value) {
-        return new LinkedList<>();
-    }
 
+        LinkedList<String> records = this.map.getOrDefault(key, new LinkedList<>());
+
+        //pop old entries
+        if (records.size() >= maxSize) {
+            while (records.size() != maxSize - 1) {
+                records.remove();
+            }
+        }
+        records.add(value);
+
+        this.map.put(key, records);
+
+        return Collections.unmodifiableList(records);
+    }
 }

@@ -1,6 +1,5 @@
 package fr.trendev.boundaries;
 
-import fr.trendev.controllers.ClusteredSingleton;
 import fr.trendev.controllers.HazelcastReplicatedMap;
 import fr.trendev.controllers.RecordsManager;
 import java.net.InetAddress;
@@ -84,8 +83,12 @@ public class HelloWorldService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response message() {
+        
+        long start = System.nanoTime();
 
         List<String> records = this.recordsManager.add(podName);
+        
+        long time = System.nanoTime() - start;
 
         long podsInRecords = records.stream()
                 .distinct()
@@ -104,6 +107,7 @@ public class HelloWorldService {
         this.jsonBuilderHelper(job, "pod_IP", podIP);
 
         job.add("max_heap_MB", this.maxMem);
+        job.add("time_ns",time);
         job.add("timestamp", new Date().getTime());
 
         JsonObject jo = job.build();

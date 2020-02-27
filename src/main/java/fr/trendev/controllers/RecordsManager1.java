@@ -7,6 +7,7 @@ package fr.trendev.controllers;
 
 import fish.payara.cluster.Clustered;
 import fish.payara.cluster.DistributedLockType;
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +27,7 @@ import org.eclipse.microprofile.config.ConfigProvider;
         lock = DistributedLockType.INHERIT, keyName = "records")
 @Singleton
 @ClusteredSingleton
-public class RecordsManager1 implements RecordsManager {
+public class RecordsManager1 implements RecordsManager, Serializable {
 
     private LinkedList<String> records;
 
@@ -76,10 +77,6 @@ public class RecordsManager1 implements RecordsManager {
             }
         }
         records.add(value);
-        return Collections.unmodifiableList(records);
-    }
-
-    protected List<String> getRecords() {
         return Collections.unmodifiableList(records);
     }
 

@@ -5,7 +5,6 @@
  */
 package fr.trendev.controllers;
 
-import java.io.Serializable;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
@@ -14,7 +13,7 @@ import javax.annotation.PreDestroy;
  *
  * @author jsie
  */
-public interface RecordsManager extends Serializable {
+public interface RecordsManager{
 
     List<String> add(String value);
 
