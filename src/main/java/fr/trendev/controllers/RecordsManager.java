@@ -23,7 +23,5 @@ public interface RecordsManager extends Serializable {
 
     @PostConstruct
     void init();
-
-    boolean isNull();
     
 }

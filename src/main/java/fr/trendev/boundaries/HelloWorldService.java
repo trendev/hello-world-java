@@ -1,6 +1,7 @@
 package fr.trendev.boundaries;
 
 import fr.trendev.controllers.ClusteredSingleton;
+import fr.trendev.controllers.HazelcastReplicatedMap;
 import fr.trendev.controllers.RecordsManager;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -40,7 +41,8 @@ public class HelloWorldService {
     private final long maxMem;
 
     @Inject
-    @ClusteredSingleton
+//    @ClusteredSingleton
+    @HazelcastReplicatedMap
     private RecordsManager recordsManager;
 
     public HelloWorldService() {

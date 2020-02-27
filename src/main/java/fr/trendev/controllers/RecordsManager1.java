@@ -49,9 +49,9 @@ public class RecordsManager1 implements RecordsManager {
 
         if (records == null) {
             records = new LinkedList<>();
-            LOG.log(Level.WARNING, "records was null and {0} is now initialized", RecordsManager1.class.getSimpleName());
+            LOG.log(Level.WARNING, "records was null and {0} is now initialized", this.getClass().getSimpleName());
         } else {
-            LOG.log(Level.WARNING, "{0} started but does not need to be initialized", RecordsManager1.class.getSimpleName());
+            LOG.log(Level.WARNING, "{0} started but does not need to be initialized", this.getClass().getSimpleName());
         }
 
     }
@@ -59,7 +59,7 @@ public class RecordsManager1 implements RecordsManager {
     @PreDestroy
     @Override
     public void close() {
-        LOG.log(Level.WARNING, "Destroying {0}", RecordsManager1.class.getSimpleName());
+        LOG.log(Level.WARNING, "Destroying {0}", this.getClass().getSimpleName());
     }
 
     @Override
@@ -83,8 +83,7 @@ public class RecordsManager1 implements RecordsManager {
         return Collections.unmodifiableList(records);
     }
 
-    @Override
-    public boolean isNull() {
+    private boolean isNull() {
         return records == null;
     }
 
