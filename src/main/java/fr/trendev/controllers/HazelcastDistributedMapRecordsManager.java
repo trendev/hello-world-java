@@ -5,11 +5,8 @@
  */
 package fr.trendev.controllers;
 
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.ReplicatedMap;
+import com.hazelcast.core.IMap;
 import fr.trendev.controllers.qualifiers.HazelcastDistributedMap;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +16,6 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
-import org.eclipse.microprofile.config.Config;
-import org.eclipse.microprofile.config.ConfigProvider;
 
 /**
  *
@@ -28,43 +23,22 @@ import org.eclipse.microprofile.config.ConfigProvider;
  */
 @ApplicationScoped
 @HazelcastDistributedMap
-public class HazelcastDistributedMapRecordsManager1 implements RecordsManager {
+public class HazelcastDistributedMapRecordsManager extends HazelcastAbstractRecordsManager {
 
-    private HazelcastInstance hz;
+    private IMap<String, LinkedList<String>> map;
 
-    private ReplicatedMap<String, LinkedList<String>> map;
+    private static final Logger LOG = Logger.getLogger(HazelcastDistributedMapRecordsManager.class.getName());
 
-    private int maxSize;
-
-    private final String key = "records";
-
-    private static final Logger LOG = Logger.getLogger(HazelcastDistributedMapRecordsManager1.class.getName());
-
-    public HazelcastDistributedMapRecordsManager1() {
-        List<HazelcastInstance> hzInstances
-                = new ArrayList<>(Hazelcast.getAllHazelcastInstances());
-
-        if (hzInstances.isEmpty()) {
-            throw new IllegalStateException("No Hazelcast instance available");
-        } else {
-            // get the first one
-            this.hz = hzInstances.get(0);
-            this.map = hz.getReplicatedMap(this.getClass().getName());
-        }
+    public HazelcastDistributedMapRecordsManager() {
+        super();
+        this.map = hz.getMap(this.getClass().getName());
     }
 
     @PostConstruct
     @Override
     public void init() {
-
-        // limits the size of the list
-        Config config = ConfigProvider.getConfig();
-        this.maxSize = Integer.parseInt(
-                config.getOptionalValue("RECORDS_MAX_SIZE", String.class)
-                        .orElse("20"));
-
+        super.init();
         LOG.log(Level.WARNING, "{0} is now initialized", this.getClass().getSimpleName());
-
     }
 
     @PreDestroy
