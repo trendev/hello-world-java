@@ -41,8 +41,6 @@ spec:
                   fieldPath: status.podIP
             - name: RECORDS_MAX_SIZE
               value: "40"
-            - name: TEXT_MESSAGE
-              value: "Hello Kubernetes World"
             - name: CLUSTERED_OBJECT_TYPE
               value: "hazelcast-replicated-map"
           args:

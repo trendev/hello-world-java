@@ -26,13 +26,13 @@ import org.eclipse.microprofile.config.inject.ConfigProperty;
 @ApplicationScoped
 public class RecordsManagerProducer {
 
-    private final static String HAZELCAST_REPLICATED_MAP
+    final static String HAZELCAST_REPLICATED_MAP
             = "hazelcast-replicated-map";
 
-    private final static String CLUSTERED_SINGLETON
+    final static String CLUSTERED_SINGLETON
             = "clustered-singleton";
 
-    private final static String HAZELCAST_DISTRIBUTED_MAP
+    final static String HAZELCAST_DISTRIBUTED_MAP
             = "hazelcast-distributed-map";
 
     @Inject

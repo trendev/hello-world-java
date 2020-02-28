@@ -85,4 +85,9 @@ public class ClusteredSingletonRecordsManager implements RecordsManager, Seriali
         return records == null;
     }
 
+    @Override
+    public String getType() {
+        return RecordsManagerProducer.CLUSTERED_SINGLETON;
+    }
+
 }

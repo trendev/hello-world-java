@@ -76,4 +76,9 @@ public class HazelcastReplicatedMapRecordsManager extends HazelcastAbstractRecor
         return Collections.unmodifiableList(records);
 
     }
+    
+    @Override
+    public String getType() {
+        return RecordsManagerProducer.HAZELCAST_REPLICATED_MAP;
+    }
 }

@@ -31,7 +31,6 @@ public class HelloWorldService {
 
     private static final Logger LOG = Logger.getLogger(HelloWorldService.class.getName());
 
-    private String message;
     private String podName;
     private String namespace;
     private String podIP;
@@ -48,8 +47,6 @@ public class HelloWorldService {
     @PostConstruct
     protected void init() {
         Config config = ConfigProvider.getConfig();
-        this.message = config.getOptionalValue("TEXT_MESSAGE", String.class)
-                .orElse("helloworld");
 
         // fields will be omitted if null
         this.podName = config.getOptionalValue("MY_POD_NAME", String.class)
@@ -80,11 +77,11 @@ public class HelloWorldService {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response message() {
-        
+
         long start = System.nanoTime();
 
         List<String> records = this.recordsManager.add(podName);
-        
+
         long time = System.nanoTime() - start;
 
         long podsInRecords = records.stream()
@@ -93,7 +90,7 @@ public class HelloWorldService {
 
         JsonObjectBuilder job = Json.createObjectBuilder();
 
-        job.add("message", message)
+        job.add("clustered_object_type", this.recordsManager.getType())
                 .add("records", Json.createArrayBuilder(records).build())
                 .add("records_length", records.size())
                 .add("pods_in_records", podsInRecords);
@@ -104,7 +101,7 @@ public class HelloWorldService {
         this.jsonBuilderHelper(job, "pod_IP", podIP);
 
         job.add("max_heap_MB", this.maxMem);
-        job.add("time_ns",time);
+        job.add("time_ns", time);
         job.add("timestamp_ms", new Date().getTime());
 
         JsonObject jo = job.build();

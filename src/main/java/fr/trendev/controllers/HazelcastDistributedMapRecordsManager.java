@@ -76,4 +76,9 @@ public class HazelcastDistributedMapRecordsManager extends HazelcastAbstractReco
         return Collections.unmodifiableList(records);
 
     }
+    
+    @Override
+    public String getType() {
+        return RecordsManagerProducer.HAZELCAST_DISTRIBUTED_MAP;
+    }
 }

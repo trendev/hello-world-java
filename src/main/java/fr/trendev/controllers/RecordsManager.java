@@ -23,4 +23,6 @@ public interface RecordsManager{
     @PostConstruct
     void init();
     
+    String getType();
+    
 }
