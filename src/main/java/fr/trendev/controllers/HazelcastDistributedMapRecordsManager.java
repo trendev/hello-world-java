@@ -5,6 +5,7 @@
  */
 package fr.trendev.controllers;
 
+import com.hazelcast.config.MapConfig;
 import com.hazelcast.core.IMap;
 import fr.trendev.controllers.qualifiers.HazelcastDistributedMap;
 import java.util.Collections;
@@ -31,7 +32,18 @@ public class HazelcastDistributedMapRecordsManager extends HazelcastAbstractReco
 
     public HazelcastDistributedMapRecordsManager() {
         super();
-        this.map = hz.getMap(this.getClass().getName());
+        
+        String mapConfigName = this.getClass().getName();
+
+        MapConfig mc = hz.getConfig().getMapConfigOrNull(mapConfigName);
+        if (mc == null) {
+            mc = new MapConfig(mapConfigName)
+                    .setBackupCount(MapConfig.MAX_BACKUP_COUNT);
+            hz.getConfig().addMapConfig(mc);
+        }
+
+        this.map = hz.getMap(mapConfigName);
+
     }
 
     @PostConstruct
@@ -76,7 +88,7 @@ public class HazelcastDistributedMapRecordsManager extends HazelcastAbstractReco
         return Collections.unmodifiableList(records);
 
     }
-    
+
     @Override
     public String getType() {
         return RecordsManagerProducer.HAZELCAST_DISTRIBUTED_MAP;
