@@ -42,7 +42,11 @@ spec:
             - name: RECORDS_MAX_SIZE
               value: "40"
             - name: CLUSTERED_OBJECT_TYPE
-              value: "hazelcast-replicated-map"
+            # different options :
+            # - hazelcast-replicated-map
+            # - clustered-singleton
+            # - hazelcast-distributed-map 
+              value: "hazelcast-distributed-map"
           args:
             - "--clustermode"
             - "kubernetes:$(MY_POD_NAMESPACE),helloworld"
