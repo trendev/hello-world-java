@@ -46,7 +46,7 @@ spec:
             # - hazelcast-replicated-map
             # - clustered-singleton
             # - hazelcast-distributed-map 
-              value: "hazelcast-distributed-map"
+              value: hazelcast-distributed-map
           args:
             - "--clustermode"
             - "kubernetes:$(MY_POD_NAMESPACE),helloworld"
@@ -66,9 +66,9 @@ spec:
             httpGet:
               path: /health/ready
               port: 8080
-            initialDelaySeconds: 30
+            initialDelaySeconds: 20
             periodSeconds: 2
-            failureThreshold: 1
+            failureThreshold: 30
           # version 1.16 - alpha
           # startupProbe:
           #   httpGet:
