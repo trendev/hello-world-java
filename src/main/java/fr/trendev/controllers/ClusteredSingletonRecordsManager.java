@@ -5,6 +5,7 @@
  */
 package fr.trendev.controllers;
 
+import fr.trendev.controllers.qualifiers.ClusteredSingleton;
 import fish.payara.cluster.Clustered;
 import fish.payara.cluster.DistributedLockType;
 import java.io.Serializable;
@@ -27,15 +28,15 @@ import org.eclipse.microprofile.config.ConfigProvider;
         lock = DistributedLockType.INHERIT, keyName = "records")
 @Singleton
 @ClusteredSingleton
-public class RecordsManager1 implements RecordsManager, Serializable {
+public class ClusteredSingletonRecordsManager implements RecordsManager, Serializable {
 
     private LinkedList<String> records;
 
     private int maxSize;
 
-    private static final Logger LOG = Logger.getLogger(RecordsManager1.class.getName());
+    private static final Logger LOG = Logger.getLogger(ClusteredSingletonRecordsManager.class.getName());
 
-    public RecordsManager1() {
+    public ClusteredSingletonRecordsManager() {
     }
 
     @PostConstruct

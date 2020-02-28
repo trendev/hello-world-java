@@ -8,6 +8,7 @@ package fr.trendev.controllers;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.core.ReplicatedMap;
+import fr.trendev.controllers.qualifiers.HazelcastDistributedMap;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -26,8 +27,8 @@ import org.eclipse.microprofile.config.ConfigProvider;
  * @author jsie
  */
 @ApplicationScoped
-@HazelcastReplicatedMap
-public class RecordsManager2 implements RecordsManager {
+@HazelcastDistributedMap
+public class HazelcastDistributedMapRecordsManager1 implements RecordsManager {
 
     private HazelcastInstance hz;
 
@@ -37,9 +38,9 @@ public class RecordsManager2 implements RecordsManager {
 
     private final String key = "records";
 
-    private static final Logger LOG = Logger.getLogger(RecordsManager2.class.getName());
+    private static final Logger LOG = Logger.getLogger(HazelcastDistributedMapRecordsManager1.class.getName());
 
-    public RecordsManager2() {
+    public HazelcastDistributedMapRecordsManager1() {
         List<HazelcastInstance> hzInstances
                 = new ArrayList<>(Hazelcast.getAllHazelcastInstances());
 
