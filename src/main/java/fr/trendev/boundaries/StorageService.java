@@ -31,9 +31,9 @@ public class StorageService {
 
     private static final Logger LOG = Logger.getLogger(StorageService.class.getName());
 
-    private String podName;
+    private String hostname;
     private String namespace;
-    private String podIP;
+    private String IP;
 
     private final long maxMem;
 
@@ -49,7 +49,7 @@ public class StorageService {
         Config config = ConfigProvider.getConfig();
 
         // fields will be omitted if null
-        this.podName = config.getOptionalValue("MY_POD_NAME", String.class)
+        this.hostname = config.getOptionalValue("MY_POD_NAME", String.class)
                 .orElseGet(() -> {
                     String hostname = null;
                     try {
@@ -60,7 +60,7 @@ public class StorageService {
                 });
         this.namespace = config.getOptionalValue("MY_POD_NAMESPACE", String.class)
                 .orElse(null);
-        this.podIP = config.getOptionalValue("MY_POD_IP", String.class)
+        this.IP = config.getOptionalValue("MY_POD_IP", String.class)
                 .orElseGet(() -> {
                     String ip = null;
                     try {
@@ -80,7 +80,7 @@ public class StorageService {
 
         long start = System.nanoTime();
 
-        List<String> records = this.recordsManager.add(podName);
+        List<String> records = this.recordsManager.add(hostname);
 
         long time = System.nanoTime() - start;
 
@@ -96,9 +96,9 @@ public class StorageService {
                 .add("pods_in_records", podsInRecords);
 
         //optional values
-        this.jsonBuilderHelper(job, "pod_name", podName);
         this.jsonBuilderHelper(job, "namespace", namespace);
-        this.jsonBuilderHelper(job, "pod_IP", podIP);
+        this.jsonBuilderHelper(job, "hostname", hostname);
+        this.jsonBuilderHelper(job, "IP", IP);
 
         job.add("max_heap_MB", this.maxMem);
         job.add("time_ns", time);

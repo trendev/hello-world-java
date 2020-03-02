@@ -1,10 +1,10 @@
 version: "3"
 services:
-  helloworld:
+  simdg:
     build: .
-    image: trendev/helloworld
-    container_name: helloworld
+    image: trendev/simdg
+    container_name: simdg
     environment:
-      - TEXT_MESSAGE='Hello Docker World'
+      - MY_POD_NAMESPACE=docker
     ports:
       - 80:8080
