@@ -2,9 +2,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: helloworld
-  name: helloworld
-  namespace: helloworld
+    app: simdg
+  name: simdg
+  namespace: simdg
 spec:
   replicas: 1
   strategy:
@@ -14,16 +14,16 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: helloworld
+      app: simdg
   template:
     metadata:
       labels:
-        app: helloworld
+        app: simdg
     spec:
       containers:
-        - image: trendev/helloworld
+        - image: trendev/simdg
           imagePullPolicy: Always
-          name: helloworld
+          name: simdg
           ports:
             - containerPort: 8080
           env:
@@ -46,10 +46,10 @@ spec:
             # - hazelcast-replicated-map
             # - clustered-singleton
             # - hazelcast-distributed-map 
-              value: hazelcast-distributed-map
+              value: hazelcast-replicated-map
           args:
             - "--clustermode"
-            - "kubernetes:$(MY_POD_NAMESPACE),helloworld"
+            - "kubernetes:$(MY_POD_NAMESPACE),simdg"
             - "--group"
             - "ig_$(MY_POD_NAMESPACE)" 
             - "--clustername" 
