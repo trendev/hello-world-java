@@ -1,5 +1,6 @@
-# helloworld
-Java Microprofile _helloworld_ Rest API 
+# simdg
+Smart In Memory Data Grid
+Build with Docker, Kubernetes, Hazelcast, Payara and Eclipse Microprofile.
 
 ## Docker
 `docker build -t trendev/helloworld .`
