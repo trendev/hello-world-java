@@ -1,8 +1,8 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: helloworld-restriction
-  namespace: helloworld
+  name: simdg-restriction
+  namespace: simdg
 spec:
   podSelector: {}
   ingress:
@@ -12,4 +12,4 @@ spec:
     - from:
         - podSelector: 
             matchLabels:
-              app: helloworld
+              app: simdg
