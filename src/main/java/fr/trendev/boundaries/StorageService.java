@@ -27,9 +27,9 @@ import org.eclipse.microprofile.config.ConfigProvider;
  */
 @Path("/")
 @Stateless
-public class HelloWorldService {
+public class StorageService {
 
-    private static final Logger LOG = Logger.getLogger(HelloWorldService.class.getName());
+    private static final Logger LOG = Logger.getLogger(StorageService.class.getName());
 
     private String podName;
     private String namespace;
@@ -40,7 +40,7 @@ public class HelloWorldService {
     @Inject
     private RecordsManager recordsManager;
 
-    public HelloWorldService() {
+    public StorageService() {
         this.maxMem = Runtime.getRuntime().maxMemory() / 1024 / 1024;
     }
 
@@ -71,12 +71,12 @@ public class HelloWorldService {
                 });
 
         LOG.log(Level.INFO, "{0} initialized",
-                HelloWorldService.class.getSimpleName());
+                StorageService.class.getSimpleName());
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response message() {
+    public Response getCachedRecords() {
 
         long start = System.nanoTime();
 
