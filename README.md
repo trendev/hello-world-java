@@ -13,7 +13,7 @@ or you can use the docker-compose file
 
 ## Kubernetes
 
-*All config files are located in `k8s/` folder*
+> All config files are located in `k8s/` folder
 
 ### Create simdg namespace
 

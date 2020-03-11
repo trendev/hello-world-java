@@ -40,13 +40,13 @@ spec:
                 fieldRef:
                   fieldPath: status.podIP
             - name: RECORDS_MAX_SIZE
-              value: "40"
+              value: "20"
             - name: CLUSTERED_OBJECT_TYPE
             # different options :
             # - hazelcast-replicated-map
             # - clustered-singleton
             # - hazelcast-distributed-map 
-              value: hazelcast-replicated-map
+              value: clustered-singleton
           args:
             - "--clustermode"
             - "kubernetes:$(MY_POD_NAMESPACE),simdg"
